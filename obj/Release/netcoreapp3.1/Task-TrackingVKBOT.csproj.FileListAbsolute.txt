@@ -12,8 +12,6 @@ C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\bin\Rele
 C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\obj\Release\netcoreapp3.1\Task-TrackingVKBOT.csprojAssemblyReference.cache
 C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\obj\Release\netcoreapp3.1\Task-TrackingVKBOT.AssemblyInfoInputs.cache
 C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\obj\Release\netcoreapp3.1\Task-TrackingVKBOT.AssemblyInfo.cs
-C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\obj\Release\netcoreapp3.1\Task-TrackingVKBOT.csproj.CoreCompileInputs.cache
-C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\obj\Release\netcoreapp3.1\Task-TrackingVKBOT.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\obj\Release\netcoreapp3.1\Task-TrackingVKBOT.RazorAssemblyInfo.cache
 C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\obj\Release\netcoreapp3.1\Task-TrackingVKBOT.RazorAssemblyInfo.cs
 C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\obj\Release\netcoreapp3.1\Task-TrackingVKBOT.TagHelpers.input.cache
