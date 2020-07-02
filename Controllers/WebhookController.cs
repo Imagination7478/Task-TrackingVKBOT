@@ -21,6 +21,7 @@ namespace Task_TrackingVKBOT.Controllers
         [HttpPost]
         public IActionResult Webhook([FromBody] WebhookJSON updates)
         {
+            updates = new WebhookJSON();
             if (updates.Type == "issue_assigned")
             {
                 // Если тип изменения issue_assigned(изменен исполнитель)
