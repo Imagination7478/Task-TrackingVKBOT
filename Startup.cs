@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using VkNet;
+using VkNet.Abstractions;
+using VkNet.Model;
 
 namespace Task_TrackingVKBOT
 {
@@ -25,6 +23,20 @@ namespace Task_TrackingVKBOT
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+
+            // отключение атоматического отклика 400
+            services.AddControllers()
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.SuppressModelStateInvalidFilter = true;
+                });
+
+            // привязка сервиса vk через access token
+            services.AddSingleton<IVkApi>(sp => {
+                var api = new VkApi();
+                api.Authorize(new ApiAuthParams { AccessToken = Configuration["Config:AccessToken"] });
+                return api;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,19 +50,17 @@ namespace Task_TrackingVKBOT
             {
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
