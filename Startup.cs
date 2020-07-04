@@ -58,7 +58,7 @@ namespace Task_TrackingVKBOT
                 //app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 

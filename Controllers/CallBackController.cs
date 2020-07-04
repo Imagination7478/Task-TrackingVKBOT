@@ -1,4 +1,5 @@
 ﻿#define TEST
+#define WITHOUTPARAMS
 using VkNet.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +12,7 @@ using System;
 
 namespace Task_TrackingVKBOT.Controllers
 {
-    [Route("api/[controller]/[action]")] // /api/Callback/
+    [Route("api/[controller]")] // /api/Callback/
     [ApiController]
     public class CallBackController : ControllerBase
     {
@@ -29,56 +30,53 @@ namespace Task_TrackingVKBOT.Controllers
         }
 
         [HttpPost]
-        public IActionResult Callback([FromBody] VkJSON updates)
+        public IActionResult Callback([FromBody] VkJSON updates) // 
         {
+            string type = "";
 #if TEST
             _vkApi.Messages.Send(new MessagesSendParams
             {
-                UserId = 161320743,
                 RandomId = new DateTime().Millisecond,
-                Message = updates.Type.ToString()
+                PeerId = 161320743,
+                Message = updates.Type
             });
 #endif
-            // Проверяем, что находится в поле "type" 
-            switch (updates.Type.Trim().ToString())
+            // костыли, чтобы работало
+            if (updates.Type == "message_new")
+                type = "message_new";
+            if (updates.Type == "confirmation")
+                type = "confirmation";
+
+#if WITHOUTPARAMS // Проверяем, что находится в поле "type" 
+            switch (type)
             {
-                case "message_reply":
-                    {
-#if TEST
-                        _vkApi.Messages.Send(new MessagesSendParams
-                        {
-                            UserId = 161320743,
-                            RandomId = new DateTime().Millisecond,
-                            Message = "в бд"
-                        });
-#endif
-                        break;
-                    }
                 case "message_new":
                     {
-                        var msg = Message.FromJson(new VkResponse(updates.Object));
+                        
+                        var msg = updates.Object;
+
 #if TEST
+                        //Если пользователь уже в базе данных, то...
                         _vkApi.Messages.Send(new MessagesSendParams
                         {
-                            UserId = 161320743,
                             RandomId = new DateTime().Millisecond,
-                            Message = "в бд"
+                            PeerId = msg.Messages.FromId,
+                            Message = msg.Messages.Text
                         });
 #endif
 
-                        switch (msg.Text.ToLower())
+                        switch (msg.Messages.Text)
                         {
-
                             case "начать":
-                                if (_BotLogic.UserInsideDatabase(msg.FromId))
+                                if (_BotLogic.UserInsideDatabase(msg.Messages.FromId))
                                 {
-                                    _BotLogic.Subscribe(_vkApi, msg.FromId, updates.GroupId, 0);
+                                    _BotLogic.Subscribe(_vkApi, msg.Messages.FromId, updates.GroupId, 0);
 #if TEST
                                     //Если пользователь уже в базе данных, то...
                                     _vkApi.Messages.Send(new MessagesSendParams
                                     {
                                         RandomId = new DateTime().Millisecond,
-                                        PeerId = msg.PeerId.Value,
+                                        PeerId = msg.Messages.FromId,
                                         Message = "в бд"
                                     });
 #endif
@@ -90,7 +88,7 @@ namespace Task_TrackingVKBOT.Controllers
                                     _vkApi.Messages.Send(new MessagesSendParams
                                     {
                                         RandomId = new DateTime().Millisecond,
-                                        PeerId = msg.PeerId.Value,
+                                        PeerId = msg.Messages.FromId,
                                         Message = "не в бд"
                                     });
 #endif
@@ -100,14 +98,23 @@ namespace Task_TrackingVKBOT.Controllers
                                 }
                                 break;
                             case "подписаться":
-                                _BotLogic.Subscribe(_vkApi, msg.FromId, updates.GroupId, 1); // 1 - подписать
+                                _BotLogic.Subscribe(_vkApi, msg.Messages.FromId, updates.GroupId, 1); // 1 - подписать
                                 break;
                             case "отписаться":
-                                _BotLogic.Subscribe(_vkApi, msg.FromId, updates.GroupId, 2); // 2 - отписать
+                                _BotLogic.Subscribe(_vkApi, msg.Messages.FromId, updates.GroupId, 2); // 2 - отписать
                                 break;
+                            default:
+#if TEST
+                                _vkApi.Messages.Send(new MessagesSendParams
+                                {
+                                    RandomId = new DateTime().Millisecond,
+                                    PeerId = msg.Messages.FromId,
+                                    Message = "Дефолт кейс"
+                                });
+#endif
+                                return Ok("ok");
                         }
-
-                        break;
+                        return Ok("ok");
                     }
                 case "confirmation":
                     { // Если запрос на подтверждение для callback - подтверждаем
@@ -116,17 +123,15 @@ namespace Task_TrackingVKBOT.Controllers
                         {
                             UserId = 161320743,
                             RandomId = new DateTime().Millisecond,
-                            Message = "в бд"
+                            Message = "подтверждение"
                         });
 #endif
                         return Ok(_configuration["Config:Confirmation"]);
                     }
+                default:
+                    return Ok("ok");
             }
-            return Ok("ok");
+#endif 
         }
-
-
     }
-
-
 }

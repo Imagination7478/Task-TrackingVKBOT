@@ -61,18 +61,20 @@ namespace Task_TrackingVKBOT
         public bool UserInsideDatabase(long? fromId)
         {
             connection.Open();
-            string FindUser = "SELECT vkid FROM [dbo].[Users] WHERE vkid = " + fromId + ";"; 
+            string FindUser = "SELECT vkid FROM dbo.Users WHERE vkid = " + fromId + ";"; 
             // id, name, surname, vkid, notificationsIsEnabled - столбцы в бд
 
             MySqlCommand command = new MySqlCommand(FindUser, connection);
             MySqlDataReader reader = command.ExecuteReader();
-            if (reader.ToString() != null)
+            reader.Read();
+            try
             {
+                reader[0].ToString();
                 reader.Close();
                 connection.Close();
                 return true;
             }
-            else
+            catch
             {
                 reader.Close();
                 connection.Close();

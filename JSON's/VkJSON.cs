@@ -19,7 +19,7 @@ namespace Task_TrackingVKBOT.JSON_s
 		/// </summary>
 
 		[JsonProperty("object")]
-		public JObject Object { get; set; }
+		public VkObject Object { get; set; }
 
 		/// <summary>
 		/// ID сообщества, в котором произошло событие
@@ -33,21 +33,19 @@ namespace Task_TrackingVKBOT.JSON_s
 		[JsonProperty("secret")]
 		public string Secret { get; set; }
 	}
-	//public class Message
-	//{
-	//	[JsonProperty("fromid")]
-	//	public long? fromid { get; set; }
 
-	//	[JsonProperty("text")]
-	//	public string text { get; set; }
+    public class Message
+    {
+        [JsonProperty("fromid")]
+        public long? FromId { get; set; }
 
-	//	[JsonProperty("text")]
-	//	public string groupId { get; set; }
-	//}
-	//public class VkObject
-	//{
-	//	[JsonProperty("message")]
-	//	public Message messages { get; set; }
-	//}
-	
+        [JsonProperty("text")]
+        public string Text { get; set; }
+    }
+    public class VkObject
+    {
+        [JsonProperty("message")]
+        public Message Messages { get; set; }
+    }
+
 }
