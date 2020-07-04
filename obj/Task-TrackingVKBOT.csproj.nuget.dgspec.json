@@ -41,6 +41,10 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Microsoft.ApplicationInsights.AspNetCore": {
+              "target": "Package",
+              "version": "[2.13.1, )"
+            },
             "Microsoft.AspNet.WebApi.Owin": {
               "target": "Package",
               "version": "[5.2.7, )"
@@ -60,6 +64,10 @@
             "VkNet": {
               "target": "Package",
               "version": "[1.53.0, )"
+            },
+            "VkNet.AudioBypassService": {
+              "target": "Package",
+              "version": "[1.6.0, )"
             }
           },
           "imports": [

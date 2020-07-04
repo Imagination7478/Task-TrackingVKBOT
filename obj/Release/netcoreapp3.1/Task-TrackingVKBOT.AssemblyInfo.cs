@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("cccf92d7-035a-4d46-9d00-e1d012df7a45")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Task-TrackingVKBOT")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]

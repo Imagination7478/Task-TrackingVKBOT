@@ -17,6 +17,7 @@ namespace Task_TrackingVKBOT.JSON_s
 		/// Объект, инициировавший событие
 		/// Структура объекта зависит от типа уведомления
 		/// </summary>
+
 		[JsonProperty("object")]
 		public JObject Object { get; set; }
 
@@ -32,4 +33,21 @@ namespace Task_TrackingVKBOT.JSON_s
 		[JsonProperty("secret")]
 		public string Secret { get; set; }
 	}
+	//public class Message
+	//{
+	//	[JsonProperty("fromid")]
+	//	public long? fromid { get; set; }
+
+	//	[JsonProperty("text")]
+	//	public string text { get; set; }
+
+	//	[JsonProperty("text")]
+	//	public string groupId { get; set; }
+	//}
+	//public class VkObject
+	//{
+	//	[JsonProperty("message")]
+	//	public Message messages { get; set; }
+	//}
+	
 }

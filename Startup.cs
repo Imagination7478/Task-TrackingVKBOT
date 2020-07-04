@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VkNet;
 using VkNet.Abstractions;
+using VkNet.AudioBypassService.Extensions;
 using VkNet.Model;
 
 namespace Task_TrackingVKBOT
@@ -25,11 +26,11 @@ namespace Task_TrackingVKBOT
             services.AddRazorPages();
 
             // отключение атоматического отклика 400
-            services.AddControllers()
-                .ConfigureApiBehaviorOptions(options =>
-                {
-                    options.SuppressModelStateInvalidFilter = true;
-                });
+            //services.AddControllers()
+            //    .ConfigureApiBehaviorOptions(options =>
+            //    {
+            //        options.SuppressModelStateInvalidFilter = true;
+            //    });
 
             // привязка сервиса vk через access token
             services.AddSingleton<IVkApi>(sp => {
@@ -37,6 +38,10 @@ namespace Task_TrackingVKBOT
                 api.Authorize(new ApiAuthParams { AccessToken = Configuration["Config:AccessToken"] });
                 return api;
             });
+
+            // обход блокировки отправки сообщений
+            services.AddAudioBypass();
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
