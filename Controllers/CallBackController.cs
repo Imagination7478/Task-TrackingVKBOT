@@ -53,10 +53,6 @@ namespace Task_TrackingVKBOT.Controllers
         [HttpPost("/callback")]
         public IActionResult Callback([FromBody] VkJSON updates) // 
         {
-            var rt = JsonConvert.SerializeObject(updates);
-
-
-#if WITHOUTPARAMS // Проверяем, что находится в поле "type" 
             switch (updates.type)
             {
                 case "message_new":
@@ -113,9 +109,6 @@ namespace Task_TrackingVKBOT.Controllers
                 default:
                     return Ok("ok");
             }
-#endif 
         }
-
-       
     }
 }

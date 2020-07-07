@@ -6,7 +6,6 @@ using System.Text.Json.Serialization;
 
 namespace Task_TrackingVKBOT.JSON_s
 {
-
     [Serializable]
     public class VkJSON
     {

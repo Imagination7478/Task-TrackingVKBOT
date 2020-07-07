@@ -132,82 +132,107 @@ namespace Task_TrackingVKBOT
                     });
                     break;
                 case 1:
-                    using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+                    if (UserInsideDatabase(userId))
                     {
-                        if (!NotificationsIsEnabled(userId))
+                        using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
                         {
-                            connection.Open();
-                            StringBuilder sb = new StringBuilder();
-                            sb.Append("UPDATE dbo.Users SET notificationsIsEnabled = 1 WHERE vkid = " + userId + "; ");
-                            String sql = sb.ToString();
-
-                            using (SqlCommand command = new SqlCommand(sql, connection))
+                            if (!NotificationsIsEnabled(userId))
                             {
-                                using (SqlDataReader reader = command.ExecuteReader())
+                                connection.Open();
+                                StringBuilder sb = new StringBuilder();
+                                sb.Append("UPDATE dbo.Users SET notificationsIsEnabled = 1 WHERE vkid = " + userId + "; ");
+                                String sql = sb.ToString();
+
+                                using (SqlCommand command = new SqlCommand(sql, connection))
                                 {
-                                    while (reader.Read()) { }
+                                    using (SqlDataReader reader = command.ExecuteReader())
+                                    {
+                                        while (reader.Read()) { }
 
-                                    reader.Close();
-                                    connection.Close();
+                                        reader.Close();
+                                        connection.Close();
+                                    }
                                 }
+                                _Vkapi.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
+                                {
+                                    RandomId = new DateTime().Millisecond,
+                                    PeerId = userId,
+                                    Message = "Вы успешно подписались на уведомления."
+                                });
                             }
-                            _Vkapi.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
+                            else
                             {
-                                RandomId = new DateTime().Millisecond,
-                                PeerId = userId,
-                                Message = "Вы успешно подписались на уведомления."
-                            });
+                                _Vkapi.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
+                                {
+                                    RandomId = new DateTime().Millisecond,
+                                    PeerId = userId,
+                                    Message = "Вы уже подписаны на уведомления. Вы можете отписаться командой 'Отписаться'."
+                                });
+                            }
                         }
-                        else
-                        {
-                            _Vkapi.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
-                            {
-                                RandomId = new DateTime().Millisecond,
-                                PeerId = userId,
-                                Message = "Вы уже подписаны на уведомления. Вы можете отписаться командой 'Отписаться'."
-                            });
-                        }
+                        break;
                     }
-                    break;
+                    else
+                    {
+                        _Vkapi.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
+                        {
+                            RandomId = new DateTime().Millisecond,
+                            PeerId = userId,
+                            Message = "Ваш ID не был найден в базе данных. Напишите 'Начать', чтобы добавить себя в базу."
+                        });
+                        break;
+                    }
                 case 2:
-                    using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
-                    {
-                        if (NotificationsIsEnabled(userId))
+                    if (UserInsideDatabase(userId)) {
+                        using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
                         {
-                            connection.Open();
-                            StringBuilder sb = new StringBuilder();
-                            sb.Append("UPDATE dbo.Users SET notificationsIsEnabled = 0 WHERE vkid = " + userId + "; ");
-                            String sql = sb.ToString();
-
-                            using (SqlCommand command = new SqlCommand(sql, connection))
+                            if (NotificationsIsEnabled(userId))
                             {
-                                using (SqlDataReader reader = command.ExecuteReader())
+                                connection.Open();
+                                StringBuilder sb = new StringBuilder();
+                                sb.Append("UPDATE dbo.Users SET notificationsIsEnabled = 0 WHERE vkid = " + userId + "; ");
+                                String sql = sb.ToString();
+
+                                using (SqlCommand command = new SqlCommand(sql, connection))
                                 {
-                                    while (reader.Read()) { }
+                                    using (SqlDataReader reader = command.ExecuteReader())
+                                    {
+                                        while (reader.Read()) { }
 
-                                    reader.Close();
-                                    connection.Close();
+                                        reader.Close();
+                                        connection.Close();
 
+                                    }
                                 }
+                                _Vkapi.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
+                                {
+                                    RandomId = new DateTime().Millisecond,
+                                    PeerId = userId,
+                                    Message = "Вы успешно отписались от уведомлений."
+                                });
                             }
-                            _Vkapi.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
+                            else
                             {
-                                RandomId = new DateTime().Millisecond,
-                                PeerId = userId,
-                                Message = "Вы успешно отписались от уведомлений."
-                            });
+                                _Vkapi.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
+                                {
+                                    RandomId = new DateTime().Millisecond,
+                                    PeerId = userId,
+                                    Message = "Вы не подписаны на уведомления."
+                                });
+                            }
                         }
-                        else
-                        {
-                            _Vkapi.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
-                            {
-                                RandomId = new DateTime().Millisecond,
-                                PeerId = userId,
-                                Message = "Вы не подписаны на уведомления."
-                            });
-                        }
+                        break;
                     }
-                    break;
+                    else
+                    {
+                        _Vkapi.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
+                        {
+                            RandomId = new DateTime().Millisecond,
+                            PeerId = userId,
+                            Message = "Ваш ID не был найден в базе данных. Напишите 'Начать', чтобы добавить себя в базу."
+                        });
+                        break;
+                    }
             }
         }
 
