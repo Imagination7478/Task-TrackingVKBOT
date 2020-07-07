@@ -1,51 +1,54 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Task_TrackingVKBOT.JSON_s
 {
-	[Serializable]
-	public class VkJSON
-	{
-		/// <summary>
-		/// Тип события
-		/// </summary>
-		[JsonProperty("type")]
-		public string Type { get; set; }
 
-		/// <summary>
-		/// Объект, инициировавший событие
-		/// Структура объекта зависит от типа уведомления
-		/// </summary>
+    [Serializable]
+    public class VkJSON
+    {
+        public string type { get; set; }
+        public Object Object { get; set; }
+        public long group_id { get; set; }
+        public string Secret { get; set; }
+    }
 
-		[JsonProperty("object")]
-		public VkObject Object { get; set; }
+    [Serializable]
+    public class Object
+    {
+        public int date { get; set; }
+        public int from_id { get; set; }
+        public int id { get; set; }
+        public int Out { get; set; }
+        public int peer_id { get; set; }
+        public string text { get; set; }
+        public int conversation_message_id { get; set; }
+        public List<object> fwd_messages { get; set; }
+        public bool important { get; set; }
+        public int random_id { get; set; }
+        public List<object> attachments { get; set; }
+        public bool is_hidden { get; set; }
 
-		/// <summary>
-		/// ID сообщества, в котором произошло событие
-		/// </summary>
-		[JsonProperty("group_id")]
-		public long GroupId { get; set; }
+    }
 
-		/// <summary>
-		/// Секретный ключ. Передается с каждым уведомлением от сервера
-		/// </summary>
-		[JsonProperty("secret")]
-		public string Secret { get; set; }
-	}
-
+   [Serializable]
     public class Message
     {
-        [JsonProperty("fromid")]
-        public long? FromId { get; set; }
+        public int date { get; set; }
+        public int from_id { get; set; }
+        public int id { get; set; }
+        public int Out { get; set; }
+        public int peer_id { get; set; }
+        public string text { get; set; }
+        public int conversation_message_id { get; set; }
+        public List<object> fwd_messages { get; set; }
+        public bool important { get; set; }
+        public int random_id { get; set; }
+        public List<object> attachments { get; set; }
+        public bool is_hidden { get; set; }
 
-        [JsonProperty("text")]
-        public string Text { get; set; }
     }
-    public class VkObject
-    {
-        [JsonProperty("message")]
-        public Message Messages { get; set; }
-    }
-
 }

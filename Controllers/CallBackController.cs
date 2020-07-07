@@ -9,10 +9,11 @@ using VkNet.Abstractions;
 using VkNet.Model;
 using VkNet.Model.RequestParams;
 using System;
+using Newtonsoft.Json;
 
 namespace Task_TrackingVKBOT.Controllers
 {
-    [Route("api/[controller]")] // /api/Callback/
+    //[Route("api/[action]")]
     [ApiController]
     public class CallBackController : ControllerBase
     {
@@ -26,106 +27,87 @@ namespace Task_TrackingVKBOT.Controllers
         {
             _vkApi = vkApi;
             _configuration = configuration;
-            _BotLogic = new BotLogic(configuration["Config:DatabaseAddr"]);
+            _BotLogic = new BotLogic(_vkApi, configuration["Database:DataSource"], configuration["Database:UserID"], configuration["Database:Password"], configuration["Database:InitialCatalog"]);
         }
 
-        [HttpPost]
+        [HttpPost("/webhook")]
+        public IActionResult Webhook([FromBody] WebhookJSON updates) //[FromBody] WebhookJSON updates
+        {
+            if (updates.issue_event_type_name == "issue_assigned")
+            {
+                //Если тип изменения issue_assigned(изменен исполнитель)
+                if (updates.changelog.items[0].fromString != updates.changelog.items[0].toString)
+                {
+                    _BotLogic.Change(updates.changelog.items[0].fromString, updates.changelog.items[0].toString, updates);
+                    return Ok();
+                }
+                else
+                    return Ok();
+                    
+            }
+            else
+                return Ok();
+
+        }
+
+        [HttpPost("/callback")]
         public IActionResult Callback([FromBody] VkJSON updates) // 
         {
-            string type = "";
-#if TEST
-            _vkApi.Messages.Send(new MessagesSendParams
-            {
-                RandomId = new DateTime().Millisecond,
-                PeerId = 161320743,
-                Message = updates.Type
-            });
-#endif
-            // костыли, чтобы работало
-            if (updates.Type == "message_new")
-                type = "message_new";
-            if (updates.Type == "confirmation")
-                type = "confirmation";
+            var rt = JsonConvert.SerializeObject(updates);
+
 
 #if WITHOUTPARAMS // Проверяем, что находится в поле "type" 
-            switch (type)
+            switch (updates.type)
             {
                 case "message_new":
                     {
-                        
                         var msg = updates.Object;
 
-#if TEST
-                        //Если пользователь уже в базе данных, то...
-                        _vkApi.Messages.Send(new MessagesSendParams
-                        {
-                            RandomId = new DateTime().Millisecond,
-                            PeerId = msg.Messages.FromId,
-                            Message = msg.Messages.Text
-                        });
-#endif
-
-                        switch (msg.Messages.Text)
+                        switch (msg.text.ToLower().Trim())
                         {
                             case "начать":
-                                if (_BotLogic.UserInsideDatabase(msg.Messages.FromId))
+                                if (_BotLogic.UserInsideDatabase(msg.from_id))
                                 {
-                                    _BotLogic.Subscribe(_vkApi, msg.Messages.FromId, updates.GroupId, 0);
-#if TEST
+                                    _BotLogic.Subscribe(msg.from_id, 0);
+
                                     //Если пользователь уже в базе данных, то...
                                     _vkApi.Messages.Send(new MessagesSendParams
                                     {
                                         RandomId = new DateTime().Millisecond,
-                                        PeerId = msg.Messages.FromId,
-                                        Message = "в бд"
+                                        PeerId = msg.from_id,
+                                        Message = "Ваши данные уже внесены в базу."
                                     });
-#endif
+                                    break;
                                 }
                                 else
                                 {
-                                    _BotLogic.AddIntoDatabase();
-#if TEST
-                                    _vkApi.Messages.Send(new MessagesSendParams
-                                    {
-                                        RandomId = new DateTime().Millisecond,
-                                        PeerId = msg.Messages.FromId,
-                                        Message = "не в бд"
-                                    });
-#endif
-                                    //_BotLogic.Subscribe(_vkApi, msg., updates.GroupId, 0); // 0 - предложить
+                                    _BotLogic.AddIntoDatabase(msg.from_id, updates.group_id);
+
+                                    _BotLogic.Subscribe(updates.group_id, 0); // 0 - предложить
                                     // Если такого пользователя нет, то предложить ему внести себя в БД, а также 
                                     // предложить ввести настоящую Имя/Фамилию при необходимости
+                                    break;
                                 }
-                                break;
                             case "подписаться":
-                                _BotLogic.Subscribe(_vkApi, msg.Messages.FromId, updates.GroupId, 1); // 1 - подписать
+                                _BotLogic.Subscribe(msg.from_id, 1); // 1 - подписать
                                 break;
                             case "отписаться":
-                                _BotLogic.Subscribe(_vkApi, msg.Messages.FromId, updates.GroupId, 2); // 2 - отписать
+                                _BotLogic.Subscribe(msg.from_id, 2); // 2 - отписать
                                 break;
                             default:
-#if TEST
                                 _vkApi.Messages.Send(new MessagesSendParams
                                 {
                                     RandomId = new DateTime().Millisecond,
-                                    PeerId = msg.Messages.FromId,
-                                    Message = "Дефолт кейс"
+                                    PeerId = msg.from_id,
+                                    Message = "Мой создатель меня к такому не готовил..."
                                 });
-#endif
                                 return Ok("ok");
                         }
                         return Ok("ok");
                     }
+
                 case "confirmation":
                     { // Если запрос на подтверждение для callback - подтверждаем
-#if TEST
-                        _vkApi.Messages.Send(new MessagesSendParams
-                        {
-                            UserId = 161320743,
-                            RandomId = new DateTime().Millisecond,
-                            Message = "подтверждение"
-                        });
-#endif
                         return Ok(_configuration["Config:Confirmation"]);
                     }
                 default:
@@ -133,5 +115,7 @@ namespace Task_TrackingVKBOT.Controllers
             }
 #endif 
         }
+
+       
     }
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "g+OHAZM1H2DxWAsGgt3MxYGMW4EdOsgjyAzpKaRFbAyITCucX2Wsg84e2hr6Wxtq8yVunSKoNuhsRGezC7aY7Q==",
+  "dgSpecHash": "XBKrawWa5zPSwzOmhOf4uuKslJvPPj4eXvFHLqi5KLtWUJ6tnsZopcnET5/Db3mVG9rphooeevtMtFLVKpV+fw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Imagination\\source\\repos\\Task-TrackingVKBOT\\Task-TrackingVKBOT\\Task-TrackingVKBOT.csproj",
   "expectedPackageFiles": [
@@ -125,8 +125,10 @@
     "C:\\Users\\Imagination\\.nuget\\packages\\system.net.http\\4.3.2\\system.net.http.4.3.2.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.net.nameresolution\\4.3.0\\system.net.nameresolution.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.net.primitives\\4.3.0\\system.net.primitives.4.3.0.nupkg.sha512",
+    "C:\\Users\\Imagination\\.nuget\\packages\\system.net.requests\\4.3.0\\system.net.requests.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.net.security\\4.3.0\\system.net.security.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.net.sockets\\4.3.0\\system.net.sockets.4.3.0.nupkg.sha512",
+    "C:\\Users\\Imagination\\.nuget\\packages\\system.net.webheadercollection\\4.3.0\\system.net.webheadercollection.4.3.0.nupkg.sha512",
     "C:\\Users\\Imagination\\.nuget\\packages\\system.net.websockets\\4.0.0\\system.net.websockets.4.0.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.objectmodel\\4.3.0\\system.objectmodel.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.private.datacontractserialization\\4.3.0\\system.private.datacontractserialization.4.3.0.nupkg.sha512",
@@ -183,6 +185,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xpath\\4.3.0\\system.xml.xpath.4.3.0.nupkg.sha512",
     "C:\\Users\\Imagination\\.nuget\\packages\\system.xml.xpath.xmldocument\\4.3.0\\system.xml.xpath.xmldocument.4.3.0.nupkg.sha512",
+    "C:\\Users\\Imagination\\.nuget\\packages\\telegram.bot\\15.7.1\\telegram.bot.15.7.1.nupkg.sha512",
     "C:\\Users\\Imagination\\.nuget\\packages\\vknet\\1.53.0\\vknet.1.53.0.nupkg.sha512",
     "C:\\Users\\Imagination\\.nuget\\packages\\vknet.audiobypassservice\\1.6.0\\vknet.audiobypassservice.1.6.0.nupkg.sha512",
     "C:\\Users\\Imagination\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"

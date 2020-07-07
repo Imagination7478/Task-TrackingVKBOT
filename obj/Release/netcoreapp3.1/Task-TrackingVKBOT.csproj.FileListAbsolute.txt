@@ -84,5 +84,6 @@ C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\bin\Rele
 C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\bin\Release\netcoreapp3.1\VkNet.AudioBypassService.dll
 C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\bin\Release\netcoreapp3.1\runtimes\unix\lib\netstandard2.0\System.Private.ServiceModel.dll
 C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\bin\Release\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Private.ServiceModel.dll
+C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\bin\Release\netcoreapp3.1\Telegram.Bot.dll
 C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\obj\Release\netcoreapp3.1\Task-TrackingVKBOT.csproj.CoreCompileInputs.cache
 C:\Users\Imagination\source\repos\Task-TrackingVKBOT\Task-TrackingVKBOT\obj\Release\netcoreapp3.1\Task-TrackingVKBOT.MvcApplicationPartsAssemblyInfo.cache

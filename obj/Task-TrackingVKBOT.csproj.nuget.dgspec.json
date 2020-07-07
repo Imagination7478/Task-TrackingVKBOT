@@ -61,6 +61,14 @@
               "target": "Package",
               "version": "[106.11.4, )"
             },
+            "System.Linq": {
+              "target": "Package",
+              "version": "[4.3.0, )"
+            },
+            "Telegram.Bot": {
+              "target": "Package",
+              "version": "[15.7.1, )"
+            },
             "VkNet": {
               "target": "Package",
               "version": "[1.53.0, )"
